@@ -91,7 +91,8 @@ static void MX_USART1_UART_Init(void);
   * @retval int
   */
 	
-
+void Meniu_Credits();
+void Meniu_Show();
 int main(void)
 {
   /* MCU Configuration--------------------------------------------------------*/
@@ -182,40 +183,15 @@ int main(void)
   //uint8_t desc[50];
 	//sprintf((char *)desc, "Coord. x:%d, y:%d", BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
 	//BSP_LCD_DisplayStringAt(0, LINE(10), (uint8_t *)desc, LEFT_MODE);
+
 	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
 	
 	BSP_LCD_Clear(0xffffffff); 	
-	BSP_LCD_DrawRect(56, 74, 130, 30);
-	BSP_LCD_DisplayStringAt(71, 85, (uint8_t*)"Start Joc", LEFT_MODE);
 	
-	BSP_LCD_DrawRect(56, 128, 130, 30);
-	BSP_LCD_DisplayStringAt(71, 140, (uint8_t*)"Machine", LEFT_MODE);
-	
-	BSP_LCD_DrawRect(56, 188, 130, 30);
-	BSP_LCD_DisplayStringAt(71, 200, (uint8_t*)"Credits", LEFT_MODE);
-	
-	BSP_LCD_DrawRect(56, 240, 130, 30);
-	BSP_LCD_DisplayStringAt(71, 250, (uint8_t*)"Exit", LEFT_MODE);
-	
+		Meniu_Show();
 		int xPosTouched;
 		int yPosTouched;
-		while(1){
-			HAL_Delay(50);
-			
-			BSP_TS_GetState(&TS_State);
-		if(!TS_State.TouchDetected)  continue;
-	
-		xPosTouched = TS_State.X;
-		yPosTouched = TS_State.Y;
-			if(xPosTouched > 56 
-				&& xPosTouched < (56 + 130) 
-				&& yPosTouched > 85 
-				&& yPosTouched < (74 + 30))
-			{
-			break;
-			}			
-			
-		}
+		
 		BSP_LCD_Clear(BOARD_COLOR); 	
 		
 		// text at the top of the LCD
@@ -349,8 +325,84 @@ int main(void)
   */
   /* USER CODE END 3 */
 }
-
-
+void Meniu_Show()
+{
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+	
+	BSP_LCD_Clear(0xffffffff); 	
+	
+	
+		int xPosTouched;
+		int yPosTouched;
+while(1){
+	BSP_LCD_DrawRect(56, 74, 130, 30);
+	BSP_LCD_DisplayStringAt(71, 85, (uint8_t*)"Start Joc", LEFT_MODE);
+	
+	BSP_LCD_DrawRect(56, 128, 130, 30);
+	BSP_LCD_DisplayStringAt(71, 140, (uint8_t*)"Machine", LEFT_MODE);
+	
+	BSP_LCD_DrawRect(56, 188, 130, 30);
+	BSP_LCD_DisplayStringAt(71, 200, (uint8_t*)"Credits", LEFT_MODE);
+	
+	BSP_LCD_DrawRect(56, 240, 130, 30);
+	BSP_LCD_DisplayStringAt(71, 250, (uint8_t*)"Exit", LEFT_MODE);
+			HAL_Delay(50);
+			
+			BSP_TS_GetState(&TS_State);
+		if(!TS_State.TouchDetected)  continue;
+	
+		xPosTouched = TS_State.X;
+		yPosTouched = TS_State.Y;
+			if(xPosTouched > 56 
+				&& xPosTouched < (56 + 130) 
+				&& yPosTouched > 85 
+				&& yPosTouched < (74 + 30))
+			{
+			break;
+			}			
+				if(xPosTouched > 56 
+				&& xPosTouched < (56 + 130) 
+				&& yPosTouched > 188
+				&& yPosTouched < (188 + 30))
+				
+			{
+				 Meniu_Credits();
+			}
+				
+		}
+}
+void Meniu_Credits()
+{
+	BSP_LCD_Clear(0xffffffff); 
+	BSP_LCD_DisplayStringAt(56, 128, (uint8_t*)"Program realizat", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(56, 148, (uint8_t*)"de:", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(56, 188, (uint8_t*)"Vizitiu Valentin", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(56, 200, (uint8_t*)"Roman Petrica", LEFT_MODE);
+	
+	BSP_LCD_DrawRect(56, 250, 130, 30);
+	BSP_LCD_DisplayStringAt(85, 250, (uint8_t*)"Return", LEFT_MODE);
+	
+	while(1){
+			HAL_Delay(50);
+	   int xPosTouched;
+		 int yPosTouched;
+			
+			BSP_TS_GetState(&TS_State);
+		if(!TS_State.TouchDetected)  continue;
+	
+		xPosTouched = TS_State.X;
+		yPosTouched = TS_State.Y;
+			if(xPosTouched > 56 
+				&& xPosTouched < (56 + 130) 
+				&& yPosTouched > 250
+				&& yPosTouched < (250 + 30))
+			{
+				
+			BSP_LCD_Clear(0xffffffff); 
+			break;
+			}			
+	}
+}
 
 /**
   * @brief System Clock Configuration
