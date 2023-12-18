@@ -143,7 +143,7 @@ int main(void)
 	BSP_LCD_SetTextColor(LCD_COLOR_RED);
 	BSP_LCD_SetFont(&Font16);
 	//BSP_LCD_DisplayStringAtLine(1, (uint8_t*)"Vizitiu Valentin");
-
+	BSP_LCD_Set
 	//BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
 	//BSP_LCD_SetFont(&Font24);
 	//BSP_LCD_DisplayStringAt(0, LINE(3), (uint8_t*)"USV", CENTER_MODE);
@@ -182,41 +182,6 @@ int main(void)
   //uint8_t desc[50];
 	//sprintf((char *)desc, "Coord. x:%d, y:%d", BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
 	//BSP_LCD_DisplayStringAt(0, LINE(10), (uint8_t *)desc, LEFT_MODE);
-	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
-	
-	BSP_LCD_Clear(0xffffffff); 	
-	BSP_LCD_DrawRect(56, 74, 130, 30);
-	BSP_LCD_DisplayStringAt(71, 85, (uint8_t*)"Start Joc", LEFT_MODE);
-	
-	BSP_LCD_DrawRect(56, 128, 130, 30);
-	BSP_LCD_DisplayStringAt(71, 140, (uint8_t*)"Machine", LEFT_MODE);
-	
-	BSP_LCD_DrawRect(56, 188, 130, 30);
-	BSP_LCD_DisplayStringAt(71, 200, (uint8_t*)"Credits", LEFT_MODE);
-	
-	BSP_LCD_DrawRect(56, 240, 130, 30);
-	BSP_LCD_DisplayStringAt(71, 250, (uint8_t*)"Exit", LEFT_MODE);
-	
-		int xPosTouched;
-		int yPosTouched;
-		while(1){
-			HAL_Delay(50);
-			
-			BSP_TS_GetState(&TS_State);
-		if(!TS_State.TouchDetected)  continue;
-	
-		xPosTouched = TS_State.X;
-		yPosTouched = TS_State.Y;
-			if(xPosTouched > 56 
-				&& xPosTouched < (56 + 130) 
-				&& yPosTouched > 85 
-				&& yPosTouched < (74 + 30))
-			{
-			break;
-			}			
-			
-		}
-		BSP_LCD_Clear(BOARD_COLOR); 	
 		
 		// text at the top of the LCD
 		BSP_LCD_DisplayStringAt(0, LINE(1), (uint8_t*)"X si 0", CENTER_MODE);
@@ -234,6 +199,8 @@ int main(void)
 //		BSP_LCD_DrawLine(30, 150, 30 + CELL_SIZE * 3, 150);
 		
 	 
+		int xPosTouched;
+		int yPosTouched;
 		
 		//BSP_LCD_DrawBitmap(0,0, (uint8_t *) stlogo);
 		DrawBoard(30, 30);
