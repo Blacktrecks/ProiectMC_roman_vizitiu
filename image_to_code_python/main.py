@@ -37,7 +37,7 @@ def tuple_to_hex(rgb: tuple[int, int, int]):
 
 if __name__ == "__main__":
     # Replace 'your_image.png' with the path to your PNG image
-    image_path = r'C:\Users\hog4m\Desktop\MC\ProiectMC_roman_vizitiu\image_to_code_python\o.png'
+    image_path = r'C:\Users\hog4m\Desktop\MC\ProiectMC_roman_vizitiu\image_to_code_python\x.png'
 
     try:
         print_rgb_values(image_path)

@@ -90,27 +90,20 @@ static void MX_USART1_UART_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
-	
+#include "stm32f429i_discovery_lcd.h"
+#include "stm32f429i_discovery_sdram.h"
+#define NUMAR_X 0
+#define NUMAR_0 1
+#define NO_PLAYER -1
+int tryGetWinner(int board[3][3]);
+void showGameScreen();
+void Meniu_Credits();
+void Meniu_Show();
 
 int main(void)
 {
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
   SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA2D_Init();
   MX_FMC_Init();
@@ -119,107 +112,134 @@ int main(void)
   MX_SPI5_Init();
   MX_TIM1_Init();
   MX_USART1_UART_Init();
-  /* USER CODE BEGIN 2 */
-
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-	
-	/* Initialize the LCD */
-/*
-#include "stm32f429i_discovery_lcd.h"
-#include "stm32f429i_discovery_sdram.h"
-*/
 	printf("\n\rLaborator-Proiect MICROCONTROLERE\n\r");
 	BSP_LCD_Init();
   BSP_LCD_LayerDefaultInit(LCD_BACKGROUND_LAYER, LCD_FRAME_BUFFER);
 	BSP_LCD_LayerDefaultInit(LCD_FOREGROUND_LAYER, LCD_FRAME_BUFFER);
   BSP_LCD_SelectLayer(LCD_FOREGROUND_LAYER);
   BSP_LCD_DisplayOn();
-  //BSP_LCD_Clear(LCD_COLOR_BLUE); 	
-	//HAL_Delay(400);
 	BSP_LCD_Clear(BOARD_COLOR); 	
 	BSP_LCD_SetTextColor(LCD_COLOR_RED);
 	BSP_LCD_SetFont(&Font16);
-	//BSP_LCD_DisplayStringAtLine(1, (uint8_t*)"Vizitiu Valentin");
-	BSP_LCD_Set
-	//BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
-	//BSP_LCD_SetFont(&Font24);
-	//BSP_LCD_DisplayStringAt(0, LINE(3), (uint8_t*)"USV", CENTER_MODE);
-	//BSP_LCD_SetFont(&Font20);
-	//BSP_LCD_DisplayStringAt(0, LINE(5), (uint8_t*)"FIESC", CENTER_MODE);
-	//HAL_Delay(1000);
-	//BSP_LCD_DrawBitmap(0,62, (uint8_t *) stlogo);
-	//BSP_LCD_DrawBitmap(158,50, (uint8_t *) usv);
-	//HAL_Delay(1000);
-	//BSP_LCD_SetFont(&Font16);
-	//BSP_LCD_DisplayStringAt(0, LINE(8), (uint8_t*)"Nume:", LEFT_MODE);
-	//BSP_LCD_SetFont(&Font16);
-	//BSP_LCD_DisplayStringAt(0, LINE(9), (uint8_t*)"Grupa:", LEFT_MODE);
-  //BSP_LCD_SetFont(&Font16);
-	//BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
-	//BSP_LCD_DisplayStringAt(4, LINE(16), (uint8_t*)"BUTON_1", LEFT_MODE);
-	//BSP_LCD_DisplayStringAt(0, LINE(16), (uint8_t*)"BUTON_2", RIGHT_MODE);
-  //BSP_LCD_DrawRect(1,252,84,24);
-  //BSP_LCD_DrawRect(150,252,84,24);
-	
-	//HAL_Delay(1000);
-  
-	//BSP_LCD_SetFont(&Font16);
-	//BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
-	//BSP_LCD_DisplayStringAt(60, 120, (uint8_t*)"BIG BUTTON", LEFT_MODE);
-	
 	
 	BSP_LCD_SetTextColor(LCD_COLOR_RED);
   
-	//BSP_LCD_DisplayStringAt(0, LINE(19), (uint8_t*)"MCU: STM32F429ZITx", CENTER_MODE);
-	//BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
-	if (BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize()) == TS_ERROR) {
-			BSP_LCD_DisplayStringAt(0, LINE(11), (uint8_t*)"Eroare initializare touch!", LEFT_MODE);
-	}
-	//printf("\n\rCoordonate ecran touch: x=%d, y=%d\n\r", BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
-  //uint8_t desc[50];
-	//sprintf((char *)desc, "Coord. x:%d, y:%d", BSP_LCD_GetXSize(), BSP_LCD_GetYSize());
-	//BSP_LCD_DisplayStringAt(0, LINE(10), (uint8_t *)desc, LEFT_MODE);
-		
-		// text at the top of the LCD
-		BSP_LCD_DisplayStringAt(0, LINE(1), (uint8_t*)"X si 0", CENTER_MODE);
-		
-//		// tic tac toe board drawing
-//		// box
-		BSP_LCD_DrawRect(30, 30, CELL_SIZE * 3, CELL_SIZE * 3);
-//		
-//		// veritcal lines
-//		BSP_LCD_DrawLine(90, 30, 90, 30 + CELL_SIZE * 3);
-//		BSP_LCD_DrawLine(150, 30, 150, 30 + CELL_SIZE * 3);
-//		
-//		// horisontal lines
-//		BSP_LCD_DrawLine(30, 90, 30 + CELL_SIZE * 3, 90);
-//		BSP_LCD_DrawLine(30, 150, 30 + CELL_SIZE * 3, 150);
-		
-	 
+		if (BSP_TS_Init(BSP_LCD_GetXSize(), BSP_LCD_GetYSize()) == TS_ERROR) {
+				BSP_LCD_DisplayStringAt(0, LINE(11), (uint8_t*)"Eroare initializare touch!", LEFT_MODE);
+		}
+
+		Meniu_Show();
+}
+
+void Meniu_Show()
+{
+	BSP_LCD_SetTextColor(LCD_COLOR_BLACK);
+	
+	BSP_LCD_Clear(0xffffffff); 	
+	
+	
 		int xPosTouched;
 		int yPosTouched;
-		
-		//BSP_LCD_DrawBitmap(0,0, (uint8_t *) stlogo);
+while(1){
+	BSP_LCD_DrawRect(56, 74, 130, 30);
+	BSP_LCD_DisplayStringAt(71, 85, (uint8_t*)"Start Joc", LEFT_MODE);
+	
+	BSP_LCD_DrawRect(56, 128, 130, 30);
+	BSP_LCD_DisplayStringAt(71, 140, (uint8_t*)"Machine", LEFT_MODE);
+	
+	BSP_LCD_DrawRect(56, 188, 130, 30);
+	BSP_LCD_DisplayStringAt(71, 200, (uint8_t*)"Credits", LEFT_MODE);
+	
+	BSP_LCD_DrawRect(56, 240, 130, 30);
+	BSP_LCD_DisplayStringAt(71, 250, (uint8_t*)"Exit", LEFT_MODE);
+			HAL_Delay(50);
+			
+			BSP_TS_GetState(&TS_State);
+		if(!TS_State.TouchDetected)  continue;
+	
+		xPosTouched = TS_State.X;
+		yPosTouched = TS_State.Y;
+			if(xPosTouched > 56 
+				&& xPosTouched < (56 + 130) 
+				&& yPosTouched > 85 
+				&& yPosTouched < (74 + 30))
+			{
+				showGameScreen();
+			}			
+				if(xPosTouched > 56 
+				&& xPosTouched < (56 + 130) 
+				&& yPosTouched > 188
+				&& yPosTouched < (188 + 30))
+				
+			{
+				 Meniu_Credits();
+			}
+				
+		}
+}
+void Meniu_Credits()
+{
+	BSP_LCD_Clear(0xffffffff); 
+	BSP_LCD_DisplayStringAt(56, 128, (uint8_t*)"Program realizat", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(56, 148, (uint8_t*)"de:", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(56, 188, (uint8_t*)"Vizitiu Valentin", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(56, 200, (uint8_t*)"Roman Petrica", LEFT_MODE);
+	
+	BSP_LCD_DrawRect(56, 250, 130, 30);
+	BSP_LCD_DisplayStringAt(85, 250, (uint8_t*)"Return", LEFT_MODE);
+	
+	while(1){
+			HAL_Delay(50);
+	   int xPosTouched;
+		 int yPosTouched;
+			
+			BSP_TS_GetState(&TS_State);
+		if(!TS_State.TouchDetected)  continue;
+	
+		xPosTouched = TS_State.X;
+		yPosTouched = TS_State.Y;
+			if(xPosTouched > 56 
+				&& xPosTouched < (56 + 130) 
+				&& yPosTouched > 250
+				&& yPosTouched < (250 + 30))
+			{
+				
+			BSP_LCD_Clear(0xffffffff); 
+			break;
+			}			
+	}
+}
+
+void showGameScreen()
+{
+		BSP_LCD_Clear(BOARD_COLOR); 	
+	
+		// text at the top of the LCD
+		BSP_LCD_DisplayStringAt(0, LINE(1), (uint8_t*)"X si 0", CENTER_MODE);
+		BSP_LCD_DrawRect(30, 30, CELL_SIZE * 3, CELL_SIZE * 3);
+
+		int xPosTouched;
+		int yPosTouched;
 		DrawBoard(30, 30);
 		
-		int currentPlayer = 0; // 0 = x, 1 = 0
+		int currentPlayer = NUMAR_X;
 		int board[3][3] = {
 			{-1, -1, -1},
 			{-1, -1, -1},
 			{-1, -1, -1}
 		};
 		
-		//BSP_LCD_DrawBitmap(0,0, (uint8_t *) testIMG);
+		int winner = NO_PLAYER;
+		
 	while (1)
   {
 		HAL_Delay(50);
 		
 		BSP_TS_GetState(&TS_State);
 		if(!TS_State.TouchDetected)  continue;
-	
+		
+		if (winner != NO_PLAYER) break;
+		
 		xPosTouched = TS_State.X;
 		yPosTouched = TS_State.Y;
 		
@@ -250,74 +270,71 @@ int main(void)
 			else
 				currentPlayer = 0;
 			
+			winner = tryGetWinner(board);
+			
+			if (winner == NUMAR_X)
+			{
+				BSP_LCD_DisplayStringAt(20, LINE(16), (uint8_t*)"X WINNER", CENTER_MODE);
+				HAL_Delay(500);
+				continue;
+			}
+			else if (winner == NUMAR_0)
+			{
+				BSP_LCD_DisplayStringAt(20, LINE(16), (uint8_t*)"O WINNER", CENTER_MODE);
+				HAL_Delay(500);
+				continue;
+			}
+			
 			sprintf(buf, "Apasat: %d", cellPressed);
 			BSP_LCD_DisplayStringAt(20, LINE(15), (uint8_t*)buf, CENTER_MODE);
 				
 			sprintf(buf, "X: %d, Y: %d", xPosTouched, yPosTouched);
 			BSP_LCD_DisplayStringAt(20, LINE(16), (uint8_t*)buf, CENTER_MODE);
-		}
-	}
-	
-	/*
-	while (1)
-  {
-	
-		BSP_TS_GetState(&TS_State);
-		if(TS_State.TouchDetected) 
-		{
-			x1 = TS_State.X;
-			y1 = TS_State.Y;
-			
-   char num1str[50];
-   sprintf(num1str, "%d", x1);
+		} // end if
+	} // end while
+	BSP_LCD_Clear(0xffffffff); 	
+} // end func
 
-   char result[50];
-   strcpy(result, "X: ");
-   strcat(result, num1str);
-   strcat(result, ", Y: ");
-
-   char num2str[50];
-   sprintf(num2str, "%d", y1);
-   strcat(result, num2str);
-			
-			BSP_LCD_DisplayStringAtLine(1, (uint8_t*)result);
-			
-			
-			if((x1>40 && x1<140+40) && (y1>60 && y1<60+140))
-			{
-				BSP_LCD_DisplayStringAt(20, LINE(12), (uint8_t*)"BIG BTN             ", CENTER_MODE);
-				BSP_LCD_DisplayStringAt(20, LINE(13), (uint8_t*)"APASAT               ", CENTER_MODE);	
-      }
-			
-			else if((x1>2 && x1<100) && (y1>250 && y1<300))
-			{
-				BSP_LCD_DisplayStringAt(0, LINE(12), (uint8_t*)"POGGERS             ", CENTER_MODE);
-				BSP_LCD_DisplayStringAt(0, LINE(13), (uint8_t*)"APASAT               ", CENTER_MODE);	
-      }
-			
-			else if((x1>180 && x1<230) && (y1>250 && y1<300))
-			{
-				BSP_LCD_DisplayStringAt(0, LINE(12), (uint8_t*)"              meow 2", CENTER_MODE);
-				BSP_LCD_DisplayStringAt(0, LINE(13), (uint8_t*)"              APASAT ", CENTER_MODE);
-		  }
-			else 
-			{
-        BSP_LCD_DisplayStringAt(0, LINE(12), (uint8_t*)"                     ", CENTER_MODE);
-				BSP_LCD_DisplayStringAt(0, LINE(13), (uint8_t*)"      TOUCH ATINS    ", CENTER_MODE);
-	    }			
-		}
-		else 
+// Tries to check if any player won
+// RETURNS: 0 - X Player won, 1 - O Player won, -1 - No Player won
+int tryGetWinner(int board[3][3])
+{
+	// orizontal
+	for (int i = 0; i < 3; i++)
+		if (board[i][0] != NO_PLAYER 
+				&& (board[i][0] == board[i][1]) 
+				&& (board[i][1] == board[i][2])) 
 		{
-				BSP_LCD_DisplayStringAt(0, LINE(12), (uint8_t*)"                     ", CENTER_MODE);
-				BSP_LCD_DisplayStringAt(0, LINE(13), (uint8_t*)"                     ", CENTER_MODE);
+			return board[i][0];
 		}
-		HAL_Delay(50);
-	}
-  */
-  /* USER CODE END 3 */
+	
+	// vertical
+	for (int j = 0; j < 3; j++)
+		if (board[0][j] != NO_PLAYER 
+				&& (board[0][j] == board[1][j]) 
+				&& (board[1][j] == board[2][j]))
+			{		
+				return board[0][j];
+			}
+	
+	// diagonala principala
+	if (board[0][0] != NO_PLAYER
+			&& (board[0][0] == board[1][1]) 
+			&& (board[1][1] == board[2][2])) 
+		{
+			return board[0][0];
+		}
+	
+	// diagonala secundara
+	if (board[0][2] != NO_PLAYER
+			&& (board[0][2] == board[1][1]) 
+			&& (board[1][1] == board[2][0]))
+		{
+			return board[0][2];
+		}
+	
+	return NO_PLAYER;
 }
-
-
 
 /**
   * @brief System Clock Configuration
